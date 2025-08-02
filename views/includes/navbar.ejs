@@ -12,6 +12,7 @@
       <i class="fa-regular fa-compass me-2"></i>
       FarAway
     </a>
+    <!-- Debug: currentUser type: <%= typeof currentUser %> -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -32,6 +33,7 @@
         <a class="nav-link" href="/login"><b>Log in</b></a>
         <% } %>
         <% if(currentUser) { %>
+        <span class="nav-link text-primary"><b><%= currentUser.username %></b></span>
         <a class="nav-link" href="/logout"><b>Log out</b></a>
         <% } %>
       </div>

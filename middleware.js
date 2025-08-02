@@ -3,7 +3,7 @@ const Review = require('./models/review');
 const ExpressError = require('./utils/expressError.js');
 const { listingSchema } = require('./schema.js');
 const { reviewSchema } = require('./schema.js');
-const dns = require('dns').promises;
+// const dns = require('dns').promises; // Removed for resume project
 const User = require('./models/user');
 
 module.exports.isLoggedIn = (req, res, next) => {
@@ -18,45 +18,19 @@ module.exports.isLoggedIn = (req, res, next) => {
 module.exports.validateSignup = async (req, res, next) => {
   const { username, email, password } = req.body;
 
-  const existingUsername = await User.findOne({ username });
-  if (existingUsername) {
-    req.flash('error', 'Username already in use');
+  // Simple validation for resume project
+  if (!username || username.length < 3) {
+    req.flash('error', 'Username must be at least 3 characters');
     return res.redirect('/signup');
   }
 
-  const existingEmail = await User.findOne({ email });
-  if (existingEmail) {
-    req.flash('error', 'Email already in use');
-    return res.redirect('/signup');
-  }
-
-  const usernameRegex = /^[a-zA-Z0-9]{3,15}$/;
-  if (!usernameRegex.test(username)) {
-    req.flash('error', 'Username must be 3–15 characters and contain only letters or numbers');
-    return res.redirect('/signup');
-  }
-
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) {
-    req.flash('error', 'Invalid email format');
-    return res.redirect('/signup');
-  }
-
-  // Check email domain's MX records
-  const domain = email.split('@')[1];
-  try {
-    const addresses = await dns.resolveMx(domain);
-    if (!addresses || addresses.length === 0) {
-      req.flash('error', 'Email domain is invalid or not accepting mail');
-      return res.redirect('/signup');
-    }
-  } catch (err) {
-    req.flash('error', 'Email domain is invalid');
+  if (!email || !email.includes('@')) {
+    req.flash('error', 'Please enter a valid email');
     return res.redirect('/signup');
   }
 
   if (!password || password.length < 6) {
-    req.flash('error', 'Password must be at least 6 characters long');
+    req.flash('error', 'Password must be at least 6 characters');
     return res.redirect('/signup');
   }
 
