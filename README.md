@@ -73,7 +73,7 @@ Before running this application, ensure you have:
 
 ### 1. Clone the Repository
 ```bash
-git clone <your-repository-url>
+git clone https://github.com/LaxitSavaliya/FarAway
 cd FarAway
 ```
 
@@ -121,11 +121,6 @@ LOG_LEVEL=info
 npm run dev
 ```
 
-**Production Mode:**
-```bash
-npm run prod
-```
-
 **Direct Start:**
 ```bash
 npm start
@@ -133,46 +128,6 @@ npm start
 
 The application will be available at `http://localhost:3000`
 
-## 🌐 Production Deployment
-
-### Environment Variables for Production
-```env
-NODE_ENV=production
-PORT=3000
-DB_URL=mongodb+srv://username:password@cluster.mongodb.net/database_name
-SECRET=your-very-long-random-secret-key
-CLOUD_NAME=your_cloudinary_cloud_name
-CLOUD_API_KEY=your_cloudinary_api_key
-CLOUD_API_SECRET=your_cloudinary_api_secret
-CLOUDINARY_FOLDER=FarAway_PROD
-MAPBOX_TOKEN=your_mapbox_token_here
-```
-
-### Deployment Platforms
-
-#### Heroku
-1. Create a Heroku app
-2. Set environment variables in Heroku dashboard
-3. Deploy using Git:
-```bash
-heroku create your-app-name
-git push heroku main
-```
-
-#### Railway
-1. Connect your GitHub repository
-2. Set environment variables in Railway dashboard
-3. Deploy automatically
-
-#### DigitalOcean App Platform
-1. Connect your repository
-2. Configure environment variables
-3. Deploy
-
-#### Vercel
-1. Connect your repository
-2. Set environment variables
-3. Deploy
 
 ## 📁 Project Structure
 
@@ -286,7 +241,7 @@ We welcome contributions! Please follow these steps:
 
 ## 📝 License
 
-This project is licensed under the **ISC License**.
+This project is for educational/demo purposes only.
 
 ## 🆘 Support & Troubleshooting
 
