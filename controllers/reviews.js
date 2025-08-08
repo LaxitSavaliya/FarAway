@@ -2,7 +2,6 @@ const ExpressError = require('../utils/expressError.js');
 const Review = require('../models/review');
 const Listing = require('../models/listing');
 
-// Create a new review
 module.exports.createReview = async (req, res, next) => {
     try {
         const listing = await Listing.findById(req.params.id);
@@ -19,7 +18,6 @@ module.exports.createReview = async (req, res, next) => {
     }
 };
 
-// Delete a review
 module.exports.destroyReview = async (req, res, next) => {
     try {
         const { id, reviewId } = req.params;

@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
 const listings = require('./data.js');
 const Listing = require('../models/listing');
+require('dotenv').config({ path: '../.env' });
 
-const dbUrl = 'mongodb://127.0.0.1:27017/faraway';
+const dbUrl = process.env.DB_URL;
 
 async function main() {
   try {

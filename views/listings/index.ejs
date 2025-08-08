@@ -1,114 +1,289 @@
 <% layout('layouts/boilerplate') %>
 
     <style>
-        .filters {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
+        body {
+            background-color: #f7f9fc;
+            font-family: 'Poppins', sans-serif;
         }
 
-        .filter {
-            margin-right: 40px;
-            text-align: center;
-            opacity: 0.7;
-            transition: opacity 0.2s;
+        .search-bar-container {
+            background: #fff;
+            padding: 15px;
+            border-radius: 50px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+            flex-wrap: wrap;
         }
 
-        .filter:hover {
-            opacity: 1;
-            cursor: pointer;
+        .search-input {
+            border: none;
+            outline: none;
+            background: #f1f3f5;
+            padding: 12px 20px;
+            border-radius: 30px;
+            font-size: 1rem;
+            flex-grow: 1;
+            min-width: 150px;
+            transition: box-shadow 0.2s ease;
         }
 
-        .filter p {
-            font-size: 0.8rem;
+        .search-input,
+        .search-button {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .search-input:focus {
+            box-shadow: 0 0 0 2px #ff5a5f;
+        }
+
+        .search-button {
+            background: #ff5a5f;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .search-button:hover {
+            background: #e04b50;
+            transform: translateY(-2px);
         }
 
         .tax-toggle {
-            border: 1px solid #ddd;
-            border-radius: 15px;
-            height: 2.5rem;
-            width: 17rem;
-            padding: 0.35rem 1rem;
-            margin-left: auto;
-            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 30px;
+            padding: 0.5rem 1.5rem;
+            background: #ffffff;
+            height: auto;
+            min-width: 200px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .listing-card {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            background-color: #fff;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            cursor: pointer;
+        }
+
+        .listing-img-container {
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .listing-img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+            display: block;
+        }
+
+        .heart-icon {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.2rem;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
             display: flex;
             align-items: center;
+            justify-content: center;
+            z-index: 1;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+
+        .heart-icon:hover {
+            background: #fff;
+            color: #ff5a5f;
+        }
+
+        .card-info {
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-grow: 1;
+        }
+
+        .card-info h6 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-info p {
+            font-size: 0.95rem;
+            color: #7f8c8d;
+            margin-bottom: 0.25rem;
+        }
+
+        .price-text {
+            font-weight: 700;
+            color: #34495e;
         }
 
         .tax-info {
-            display: none;
-            color: #198754;
-            font-weight: 500;
-            font-size: 12px;
+            font-size: 0.85rem;
+            color: #2ecc71;
+            font-weight: 600;
+            margin-left: 5px;
+        }
+
+        .rating-container {
+            display: flex;
+            align-items: center;
+            font-size: 0.95rem;
+            color: #34495e;
+        }
+
+        .star {
+            color: #fbbc04;
+            margin-left: 5px;
+        }
+
+        @media (min-width: 992px) {
+
+            .search-bar-container {
+                padding: 15px 25px;
+                border-radius: 50px;
+            }
+
+            .search-input,
+            .search-button {
+                width: auto;
+                margin-bottom: 0;
+            }
+
+            .listing-img {
+                height: 220px;
+            }
+        }
+
+        @media (max-width: 991px) {
+            .listing-img {
+                height: 200px;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .search-bar-container {
+                border-radius: 30px;
+            }
+
+            .search-bar-container .d-flex {
+                flex-direction: column;
+            }
+
+            .tax-toggle {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 575px) {
+            .listing-img {
+                height: 250px;
+            }
+
+            .listing-card {
+                border-radius: 12px;
+            }
         }
     </style>
 
-    <div class="filters" aria-label="Listing filters">
-        <div class="tax-toggle" aria-label="Toggle GST info">
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" id="switchCheckGST" aria-checked="false">
-                <label class="form-check-label" for="switchCheckGST">Show GST info</label>
+    <div class="container-fluid mb-5">
+        <div class="d-flex flex-column flex-md-row align-items-center justify-content-center gap-4">
+            <div class="search-bar-container d-flex flex-column flex-lg-row align-items-center gap-3 w-100">
+                <form action="/listings" method="GET"
+                    class="d-flex flex-grow-1 flex-column flex-lg-row align-items-center gap-3 w-100" role="search">
+                    <input class="form-control search-input rounded-pill" type="search" name="location"
+                        placeholder="Location" aria-label="Search by Location" />
+                    <button
+                        class="btn btn-primary search-button rounded-pill d-flex align-items-center justify-content-center gap-2"
+                        type="submit">
+                        <i class="fa-solid fa-magnifying-glass"></i>Search
+                    </button>
+                </form>
+            </div>
+
+            <div class="filters d-flex align-items-center mt-3 mt-lg-0">
+                <div class="tax-toggle d-flex align-items-center justify-content-between">
+                    <span class="fw-bold">Display GST</span>
+                    <div class="form-check form-switch m-0">
+                        <input class="form-check-input" type="checkbox" role="switch" id="switchCheckGST"
+                            aria-checked="false">
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <section class="py-4">
-        <div>
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-6 g-4">
-                <% allListings.forEach(listing=> { %>
-                    <div class="col">
-                        <a href="/listings/<%= listing._id %>" class="text-decoration-none w-100"
-                            aria-label="View <%= listing.title %>">
-                            <div class="card border-0 position-relative card-rounded h-100">
-                                <img src="<%= listing.image.url %>" class="card-img-top"
-                                    alt="<%= listing.title %> image" loading="lazy"
+    <section class="container py-5">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+            <% allListings.forEach(listing=> { %>
+                <div class="col">
+                    <a href="/listings/<%= listing._id %>" class="text-decoration-none w-100 h-100 d-block"
+                        aria-label="View <%= listing.title %>">
+                        <div class="listing-card">
+                            <div class="listing-img-container">
+                                <img src="<%= listing.image.url %>" class="listing-img" alt="<%= listing.title %> image"
+                                    loading="lazy"
                                     onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60';">
-                                <% if (listing.isGuestFavourite) { %>
-                                    <span class="badge-custom">Guest favourite</span>
-                                    <% } %>
-                                        <i class="fa-regular fa-heart heart-icon" aria-label="Add to wishlist"></i>
-                                        <div class="card-body px-2 py-1">
-                                            <h6 class="card-title mb-1 fw-semibold" style="font-size: 14px;">
-                                                <%= listing.title %>
-                                            </h6>
-                                            <p class="card-text mb-0" style="font-size: 13px;">
-                                                &#8377;<%= listing.price ? listing.price.toLocaleString("en-IN") : "N/A"
-                                                    %>/ nights
-                                                    <i class="tax-info">&nbsp; &nbsp;+18% GST</i>
-                                            </p>
-                                        </div>
+                                <i class="fa-regular fa-heart heart-icon" aria-label="Add to wishlist"></i>
                             </div>
-                        </a>
-                    </div>
-                    <% }) %>
-            </div>
+                            <div class="card-info">
+                                <div>
+                                    <h6>
+                                        <%= listing.title %>
+                                    </h6>
+                                    <p class="mb-0">
+                                        <span class="price-text">₹<%= listing.price ?
+                                                listing.price.toLocaleString("en-IN") : "N/A" %></span> / nights
+                                        <span class="tax-info d-none">+18% GST</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <% }) %>
         </div>
     </section>
 
     <script>
-        // GST info toggle
-        document.getElementById('switchCheckGST').addEventListener('change', function () {
-            const taxInfos = document.querySelectorAll('.tax-info');
-            taxInfos.forEach(info => {
-                info.style.display = this.checked ? 'inline' : 'none';
-            });
-        });
-
-        // Better image error handling
         document.addEventListener('DOMContentLoaded', function () {
-            const images = document.querySelectorAll('.card-img-top');
+            const switchCheckGST = document.getElementById('switchCheckGST');
+            const taxInfos = document.querySelectorAll('.tax-info');
+
+            switchCheckGST.addEventListener('change', function () {
+                taxInfos.forEach(info => {
+                    info.classList.toggle('d-none', !this.checked);
+                });
+            });
+
+            const images = document.querySelectorAll('.listing-img');
             const fallbackImage = 'https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60';
+
             images.forEach(img => {
                 img.addEventListener('error', function () {
                     this.src = fallbackImage;
                     this.alt = 'Image not available';
-                });
-                img.addEventListener('load', function () {
                     this.style.opacity = '1';
                 });
-                img.style.opacity = '0.7';
-                img.style.transition = 'opacity 0.3s ease';
             });
         });
     </script>

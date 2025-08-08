@@ -1,63 +1,232 @@
 <% layout('layouts/boilerplate') %>
-<div class="row">
-    <div class="col-12 d-flex justify-content-center">
-        <div class="card shadow edit-listing-card">
-            <div class="card-body p-5">
-                <h2 class="mb-4 edit-listing-title">Edit Listing</h2>
-                <form method="post" action="/listings/<%= listing._id %>?_method=PUT" novalidate class="needs-validation" enctype="multipart/form-data">
+    <style>
+        body {
+            background-color: #f0f2f5;
+            font-family: 'Inter', sans-serif;
+        }
 
-                    <!-- ...existing form fields... -->
-                    <div class="mb-3">
-                        <label for="title" class="form-label">Title</label>
-                        <input type="text" id="title" class="form-control" name="listing[title]" value="<%= listing.title %>" required>
-                        <div class="invalid-feedback">
-                            Please provide a valid Title.
-                        </div>
+        .edit-listing-container {
+            padding-top: 3rem;
+            padding-bottom: 3rem;
+        }
+
+        .edit-listing-card {
+            background-color: #ffffff;
+            border-radius: 1.5rem;
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.1);
+            border: none;
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        .edit-listing-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #34495e;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            border-radius: 0.75rem;
+            padding: 0.75rem 1rem;
+            border: 1px solid #e0e0e0;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .form-control:focus {
+            border-color: #ff5a5f;
+            box-shadow: 0 0 0 0.25rem rgba(255, 90, 95, 0.25);
+        }
+
+        .invalid-feedback {
+            font-size: 0.9rem;
+        }
+
+        .current-image-preview {
+            border: 1px solid #e0e0e0;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .current-image-preview img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 0.5rem;
+            object-fit: contain;
+            margin-top: 1rem;
+            border: 1px solid #ddd;
+        }
+
+        .edit-listing-btn {
+            background-color: #ff5a5f;
+            border-color: #ff5a5f;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .edit-listing-btn:hover {
+            background-color: #e04b50;
+            border-color: #e04b50;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 90, 95, 0.2);
+        }
+
+        .back-btn {
+            margin-bottom: 2rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #555;
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .back-btn:hover {
+            color: #ff5a5f;
+        }
+
+        @media (max-width: 768px) {
+            .edit-listing-title {
+                font-size: 1.8rem;
+            }
+
+            .edit-listing-card {
+                border-radius: 1rem;
+                padding: 1.5rem;
+            }
+
+            .current-image-preview img {
+                max-height: 150px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .edit-listing-container {
+                padding-top: 1.5rem;
+                padding-bottom: 1.5rem;
+            }
+
+            .edit-listing-card {
+                border-radius: 0.75rem;
+                padding: 1rem;
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            }
+
+            .edit-listing-title {
+                font-size: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .form-control,
+            .edit-listing-btn {
+                padding: 0.6rem 1rem;
+                border-radius: 0.5rem;
+            }
+
+            .current-image-preview {
+                padding: 0.75rem;
+            }
+
+            .current-image-preview img {
+                max-height: 120px;
+            }
+        }
+    </style>
+
+    <div class="container edit-listing-container">
+        <div class="row justify-content-center">
+            <div class="col-xl-8 col-lg-9 col-md-10 col-sm-11">
+                <a href="/listings/<%= listing._id %>" class="back-btn">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Listing
+                </a>
+                <div class="card shadow edit-listing-card">
+                    <div class="card-body p-4 p-md-5">
+                        <h2 class="edit-listing-title">Edit Listing</h2>
+                        <form method="post" action="/listings/<%= listing._id %>?_method=PUT" novalidate
+                            class="needs-validation" enctype="multipart/form-data">
+
+                            <div class="mb-3">
+                                <label for="title" class="form-label">Title</label>
+                                <input type="text" id="title" class="form-control" name="listing[title]"
+                                    value="<%= listing.title %>" required>
+                                <div class="invalid-feedback">
+                                    Please provide a valid Title.
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Description</label>
+                                <textarea id="description" class="form-control" name="listing[description]" rows="4"
+                                    required><%= listing.description %></textarea>
+                                <div class="invalid-feedback">
+                                    Please provide a valid Description.
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label d-block">Current Image</label>
+                                <div class="current-image-preview">
+                                    <p class="text-muted mb-2">This is the image currently associated with your listing.
+                                    </p>
+                                    <img src="<%= listing.image.url %>" alt="Current Listing Image" loading="lazy"
+                                        onerror="this.onerror=null; this.src='https://placehold.co/800x600/E0E0E0/555555?text=Image+Not+Available'; this.alt='Image not available';">
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="image" class="form-label">Upload New Image (Optional)</label>
+                                <input type="file" id="image" class="form-control" name="listing[image]">
+                                <small class="form-text text-muted">Upload a new image to replace the current
+                                    one.</small>
+                            </div>
+
+                            <div class="row g-3">
+                                <div class="mb-3 col-md-6">
+                                    <label for="price" class="form-label">Price</label>
+                                    <input type="number" id="price" class="form-control" name="listing[price]"
+                                        value="<%= listing.price %>" required>
+                                    <div class="invalid-feedback">
+                                        Please provide a valid Price.
+                                    </div>
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <label for="country" class="form-label">Country</label>
+                                    <input type="text" id="country" class="form-control" name="listing[country]"
+                                        value="<%= listing.country %>" required>
+                                    <div class="invalid-feedback">
+                                        Please provide a valid Country.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="location" class="form-label">Location</label>
+                                <input type="text" id="location" class="form-control" name="listing[location]"
+                                    value="<%= listing.location %>" required>
+                                <div class="invalid-feedback">
+                                    Please provide a valid Location.
+                                </div>
+                            </div>
+
+                            <div class="d-grid mt-4">
+                                <button class="btn btn-primary btn-lg edit-listing-btn">Update Listing</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="mb-3">
-                        <label for="description" class="form-label">Description</label>
-                        <textarea id="description" class="form-control" name="listing[description]" rows="3" required><%= listing.description %></textarea>
-                        <div class="invalid-feedback">
-                            Please provide a valid Description.
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        Original Listed Image
-                        <br>
-                        <img src="<%= originalUrl %>">
-                    </div>
-                    <div class="mb-3">
-                        <label for="image" class="form-label">Image</label>
-                        <input type="file" id="image" class="form-control" name="listing[image]">
-                    </div>
-                    <div class="row">
-                        <div class="mb-3 col-md-4">
-                            <label for="price" class="form-label">Price</label>
-                            <input type="number" id="price" class="form-control" name="listing[price]" value="<%= listing.price %>" required>
-                            <div class="invalid-feedback">
-                            Please provide a valid Price.
-                        </div>
-                        </div>
-                        <div class="mb-3 col-md-8">
-                            <label for="country" class="form-label">Country</label>
-                            <input type="text" id="country" class="form-control" name="listing[country]" value="<%= listing.country %>" required>
-                            <div class="invalid-feedback">
-                            Please provide a valid Country.
-                        </div>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="location" class="form-label">Location</label>
-                        <input type="text" id="location" class="form-control" name="listing[location]" value="<%= listing.location %>" required>
-                        <div class="invalid-feedback">
-                            Please provide a valid Location.
-                        </div>
-                    </div>
-                    <div class="d-grid">
-                        <button class="btn btn-primary btn-lg edit-listing-btn">Update Listing</button>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
-</div>

@@ -4,10 +4,6 @@ const wrapAsync = require('../utils/wrapAsync.js');
 const reviewController = require('../controllers/reviews.js');
 const {validateReview, isLoggedIn, isReviewAuthor} = require('../middleware.js');
 
-// Middleware for validating review input
-
-
-// Create a new review
 router.post(
   '/',
   isLoggedIn,
@@ -15,7 +11,6 @@ router.post(
   wrapAsync(reviewController.createReview)
 );
 
-// Delete a review
 router.delete(
   '/:reviewId',
   isLoggedIn,

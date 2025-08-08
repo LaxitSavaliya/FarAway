@@ -1,6 +1,5 @@
 const User = require('../models/user');
 
-// Username availability check (AJAX) - simplified for resume
 module.exports.checkUsername = async (req, res) => {
     const { username } = req.query;
     if (!username || username.length < 3 || username.length > 15) {
@@ -13,7 +12,6 @@ module.exports.checkUsername = async (req, res) => {
     res.json({ available: true });
 };
 
-// Email availability check (AJAX) - simplified for resume
 module.exports.checkEmail = async (req, res) => {
     const { email } = req.query;
     if (!email || !email.includes('@')) {
@@ -26,18 +24,21 @@ module.exports.checkEmail = async (req, res) => {
     res.json({ available: true });
 };
 
-// Render signup form
 module.exports.renderSignup = (req, res) => {
-    res.render('users/signup.ejs');
+    if (req.user) {
+        req.flash("success", 'You are already logged in')
+        res.redirect('/listings')
+    } else {
+        res.render('users/signup.ejs');
+    }
 };
 
-// Signup logic - simplified for resume
 module.exports.signup = async (req, res, next) => {
     try {
         let { username, email, password } = req.body;
         username = username.trim();
         email = email.trim();
-        
+
         const newUser = new User({ email, username });
         const registerUser = await User.register(newUser, password);
         req.login(registerUser, (err) => {
@@ -52,12 +53,15 @@ module.exports.signup = async (req, res, next) => {
     }
 };
 
-// Render login form
 module.exports.renderLoginForm = (req, res) => {
-    res.render('users/login.ejs');
+    if (req.user) {
+        req.flash("success", 'You are already logged in')
+        res.redirect('/listings')
+    } else {
+        res.render('users/login.ejs');
+    }
 };
 
-// Login logic - simplified for resume
 module.exports.login = (req, res) => {
     console.log('Login successful for user:', req.user.username);
     req.flash('success', 'Welcome back to FarAway! You are logged in!');
@@ -65,7 +69,6 @@ module.exports.login = (req, res) => {
     res.redirect(redirectUrl);
 };
 
-// Logout logic (POST preferred, GET for legacy)
 module.exports.logout = (req, res, next) => {
     req.logout((err) => {
         if (err) return next(err);

@@ -1,6 +1,5 @@
 const Joi = require('joi');
 
-// Listing validation schema
 module.exports.listingSchema = Joi.object({
   listing: Joi.object({
     title: Joi.string()
@@ -61,7 +60,6 @@ module.exports.listingSchema = Joi.object({
   }).required()
 });
 
-// Review validation schema
 module.exports.reviewSchema = Joi.object({
   review: Joi.object({
     rating: Joi.number()

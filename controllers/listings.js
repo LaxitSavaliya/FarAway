@@ -1,17 +1,36 @@
 const Listing = require('../models/listing');
+const { all } = require('../routes/listing');
 
-// List all listings
+
 module.exports.index = async (req, res) => {
-    const allListings = await Listing.find({});
+    const { location } = req.query;
+
+    let allListings;
+
+    if (location) {
+        let foundByLocation = await Listing.find({
+            location: { $regex: new RegExp(location, 'i') }
+        }).populate('reviews');
+
+        if (foundByLocation.length > 0) {
+            allListings = foundByLocation;
+        } else {
+            let foundByCountry = await Listing.find({
+                country: { $regex: new RegExp(location, 'i') }
+            }).populate('reviews');
+            allListings = foundByCountry;
+        }
+    } else {
+        allListings = await Listing.find({}).populate('reviews');
+    }
+
     res.render('listings/index', { allListings });
 };
 
-// Render new listing form
 module.exports.renderNewForm = (req, res) => {
     res.render('listings/new');
 };
 
-// Show a single listing
 module.exports.showListing = async (req, res, next) => {
     const { id } = req.params;
     const listing = await Listing.findById(id)
@@ -24,7 +43,6 @@ module.exports.showListing = async (req, res, next) => {
     res.render('listings/show', { listing });
 };
 
-// Create a new listing
 module.exports.createListing = async (req, res, next) => {
     try {
         if (!req.file) {
@@ -44,7 +62,6 @@ module.exports.createListing = async (req, res, next) => {
     }
 };
 
-// Render edit form
 module.exports.renderEditForm = async (req, res, next) => {
     const { id } = req.params;
     const listing = await Listing.findById(id);
@@ -57,7 +74,6 @@ module.exports.renderEditForm = async (req, res, next) => {
     res.render('listings/edit', { listing, originalUrl });
 };
 
-// Update a listing
 module.exports.updateListing = async (req, res, next) => {
     const { id } = req.params;
     const updatedListing = await Listing.findByIdAndUpdate(id, { ...req.body.listing }, { new: true });
@@ -75,7 +91,6 @@ module.exports.updateListing = async (req, res, next) => {
     res.redirect(`/listings/${id}`);
 };
 
-// Delete a listing
 module.exports.destroyListing = async (req, res, next) => {
     const { id } = req.params;
     const deletedListing = await Listing.findByIdAndDelete(id);

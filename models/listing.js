@@ -50,7 +50,6 @@ const listingSchema = new Schema({
   }
 }, { timestamps: true });
 
-// Cascade delete reviews when a listing is deleted
 listingSchema.post('findOneAndDelete', async function(listing) {
   if (listing && listing.reviews && listing.reviews.length > 0) {
     await Review.deleteMany({ _id: { $in: listing.reviews } });

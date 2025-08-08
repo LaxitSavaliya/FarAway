@@ -13,9 +13,6 @@ A full-stack web application for creating, managing, and reviewing listings with
 - **User Registration & Login**: Secure authentication with Passport.js
 - **Session Management**: Persistent sessions with MongoDB store
 - **Password Security**: Bcrypt hashing for secure password storage
-- **CSRF Protection**: Cross-site request forgery prevention
-- **Rate Limiting**: Protection against brute force attacks
-- **Security Headers**: Helmet.js for enhanced security
 
 ### 📝 Listing Management
 - **CRUD Operations**: Create, Read, Update, Delete listings
@@ -53,8 +50,7 @@ A full-stack web application for creating, managing, and reviewing listings with
 - **Maps**: Mapbox integration (optional)
 - **Icons**: Modern iconography
 
-### Security & Performance
-- **Security**: Helmet.js, CSRF protection, rate limiting
+### Performance
 - **Session**: Express-session with MongoDB store
 - **Environment**: Environment-based configuration
 - **Error Handling**: Comprehensive error management
@@ -84,19 +80,18 @@ npm install
 
 ### 3. Environment Configuration
 ```bash
-# Copy the environment template
 cp env.example .env
 ```
 
 Edit the `.env` file with your configuration:
 ```env
 # Server Configuration
-PORT=3000
+PORT=8080
 NODE_ENV=development
 
 # Database Configuration
 DB_URL=mongodb://localhost:27017/faraway_db
-# For production: mongodb+srv://username:password@cluster.mongodb.net/database_name
+# Atlas: mongodb+srv://username:password@cluster.mongodb.net/database_name
 
 # Session Secret (generate a strong random string)
 SECRET=your-super-secret-session-key-here
@@ -110,10 +105,6 @@ CLOUDINARY_FOLDER=FarAway_DEV
 # Mapbox Configuration (optional)
 MAPBOX_TOKEN=your_mapbox_token_here
 
-# Optional: Logging
-LOG_LEVEL=info
-```
-
 ### 4. Start the Application
 
 **Development Mode:**
@@ -126,7 +117,7 @@ npm run dev
 npm start
 ```
 
-The application will be available at `http://localhost:3000`
+The application will be available at `http://localhost:8080`
 
 
 ## 📁 Project Structure
@@ -200,14 +191,10 @@ FarAway/
 
 ## 🔒 Security Features
 
-- ✅ **Helmet.js**: Security headers protection
-- ✅ **CSRF Protection**: Cross-site request forgery prevention
-- ✅ **Rate Limiting**: Brute force attack prevention
 - ✅ **Input Validation**: Joi schemas for all inputs
 - ✅ **Session Security**: Secure, httpOnly cookies
 - ✅ **Authentication**: Passport.js with secure password hashing
 - ✅ **Authorization**: Role-based access control
-- ✅ **XSS Protection**: Cross-site scripting prevention
 - ✅ **SQL Injection Prevention**: MongoDB with parameterized queries
 
 ## 🧪 Testing & Quality
@@ -242,8 +229,6 @@ We welcome contributions! Please follow these steps:
 ## 📝 License
 
 This project is for educational/demo purposes only.
-
-## 🆘 Support & Troubleshooting
 
 ### Common Issues
 

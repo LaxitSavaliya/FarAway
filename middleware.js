@@ -3,7 +3,6 @@ const Review = require('./models/review');
 const ExpressError = require('./utils/expressError.js');
 const { listingSchema } = require('./schema.js');
 const { reviewSchema } = require('./schema.js');
-// const dns = require('dns').promises; // Removed for resume project
 const User = require('./models/user');
 
 module.exports.isLoggedIn = (req, res, next) => {
@@ -18,7 +17,6 @@ module.exports.isLoggedIn = (req, res, next) => {
 module.exports.validateSignup = async (req, res, next) => {
   const { username, email, password } = req.body;
 
-  // Simple validation for resume project
   if (!username || username.length < 3) {
     req.flash('error', 'Username must be at least 3 characters');
     return res.redirect('/signup');
