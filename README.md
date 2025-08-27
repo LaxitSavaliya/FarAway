@@ -1,4 +1,4 @@
-# 🌟 FarAway - Modern Listing & Review Platform
+# 🌟 FarAway - Modern Rental & Review Platform
 
 A full-stack web application for creating, managing, and reviewing listings with advanced features like image uploads, user authentication, and responsive design.
 
