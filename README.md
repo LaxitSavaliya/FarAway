@@ -91,7 +91,7 @@ NODE_ENV=development
 
 # Database Configuration
 DB_URL=mongodb://localhost:27017/faraway_db
-# Atlas: mongodb+srv://username:password@cluster.mongodb.net/database_name
+# Atlas: mongodb url
 
 # Session Secret (generate a strong random string)
 SECRET=your-super-secret-session-key-here
